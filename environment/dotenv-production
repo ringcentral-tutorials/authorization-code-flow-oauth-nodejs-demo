@@ -1,0 +1,4 @@
+RC_SERVER_URL=https://platform.ringcentral.com
+RC_REDIRECT_URL=http://localhost:5000/oauth2callback
+RC_CLIENT_ID=
+RC_CLIENT_SECRET=

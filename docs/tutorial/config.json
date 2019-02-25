@@ -1,0 +1,6 @@
+{
+    "title": "RingCentral Authorization Code Flow OAuth - Node JS",
+    "repo": "https://github.com/ringcentral-tutorials/authorization-code-flow-oauth-nodejs-demo",
+    "description": "In this step-by-step tutorial, you are going to learn how to authorize a user to login RingCentral platform using the authorization code flow. Click the \"Start\" button below to start the tutorial.",
+    "heroku": false
+}

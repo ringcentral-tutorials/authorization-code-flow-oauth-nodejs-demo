@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      var authorize_uri = '<%- authorize_uri %>'
+      var redirect_uri = '<%- redirect_uri %>'
+      var config = {
+          authUri: authorize_uri,
+          redirectUri: redirect_uri,
+      }
+      var OAuthCode = function(config) {
+          this.config = config;
+          this.loginPopup  = function() {
+              this.loginPopupUri(this.config['authUri'], this.config['redirectUri']);
+          }
+          this.loginPopupUri  = function(authUri, redirectUri) {
+              var win         = window.open(authUri, 'windowname1', 'width=800, height=600');
+              var pollOAuth   = window.setInterval(function() {
+                try {
+                  if (win.document.URL.indexOf(redirectUri) != -1) {
+                      window.clearInterval(pollOAuth);
+                      win.close();
+                      window.location.href = "test"
+                  }
+                } catch(e) {
+                  console.log(e)
+              }
+            }, 100);
+          }
+      }
+      var oauth = new OAuthCode(config);
+      oauth.loginPopup()
+    </script>
+  </head>
+  <body/>
+</html>

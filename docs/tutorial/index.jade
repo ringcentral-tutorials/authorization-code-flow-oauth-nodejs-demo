@@ -1,0 +1,122 @@
+.chapter(data-title='RingCentral Platform Authentication - Authorization Code Flow OAuth')
+  .step(data-title='Clone and Setup the project', data-file='../README.md' data-highlight='9-17')
+    :markdown
+      ### Clone and Setup the project
+      Clone the project from GitHub and install RingCentral Node JS SDK and dependencies.
+
+  .step(data-title='Create a RingCentral app', data-file='../README.md' data-highlight='23-33')
+    h3 Create a RingCentral app
+
+    p The first thing we need to do is create an app in the RingCentral Developer Portal.
+    p If you don't know how to create a RingCentral app. Click <a href="https://developer.ringcentral.com/library/getting-started.html">here</a> for instructions.
+
+  .step(data-title='Set Environment Variables', data-file='../environment/dotenv-sandbox')
+    :markdown
+     ### Set Environment Variables
+     Copy the Client id and Client secret and add them to the `.env-sandbox` file.
+     ```
+     RC_CLIENT_ID=
+     RC_CLIENT_SECRET=
+     ```
+     If you want to specify variables for your production environment, repeat this step for the `.env-production` file.
+
+  .step(data-title='Set up the Express Web server', data-file='../index.js' data-highlight='1-9')
+    :markdown
+      ### Set up the Express Web server
+
+      We load the `path`, `express` and `express-session` modules.
+
+      The purpose of having the `session` is for keeping the access token info after we successfully login RingCentral platform.
+
+      We run the local server on port 5000. If this port is not available on your system, feel free to choose another port number.
+
+      To keep the codes simple, we'll use very minimum functions from the Express Web application framework.
+
+  .step(data-title='Load the RingCentral Node JS SDK', data-file='../index.js' data-highlight='11-12')
+    :markdown
+      ### Load RingCentral Node JS SDK
+
+      Using a RingCentral SDK is the most convenient way to authenticate and access RingCentral platform services.
+
+      We define a global `rcsdk` variable and assign the instance of the RingCentral SDK in a while.
+
+  .step(data-title='Implement the main page', data-file='../views/index.ejs' data-highlight='1-21')
+    :markdown
+      ### Implement the main page
+
+      We create a main page with login options to login a production account or a sandbox account.
+
+  .step(data-title='Implement the root route', data-file='../index.js' data-highlight='14-19')
+    :markdown
+      ### Implement the root `/` route
+
+      Within the root `/` route, we launch the main page.
+
+      Within the `index` route, we reroute to the root then from there we launch the main page.
+
+  .step(data-title='Implement the login route', data-file='../index.js' data-highlight='21-41')
+    :markdown
+      ### Implement the `login` route
+
+      First, we check the `query.env` parameter to identify which environment was selected and load our app credentials accordingly.
+
+      Then, we create an instance of the SDK, passing the app credentials and assign to the global variable `rcsdk`.
+
+      Next, we get the `platform` instance from the SDK and call the `platform.authUrl()` function to generate the `authorize_uri`.
+
+      Finally, we load the login page, passing the `authorize_uri` and the `redirect_uri` as shown on the code.
+
+  .step(data-title='Implement the login page', data-file='../views/login.ejs' data-highlight='1-38')
+    :markdown
+      ### Implement the login page
+
+      We create an empty page and implement JavaScript codes to launch the pop-up RingCentral login window.
+
+      After login successfully, we will close the popup window and launch the test page.
+
+  .step(data-title='Implement the oauth2callback route', data-file='../index.js' data-highlight='43-60')
+    :markdown
+      ### Implement the `oauth2callback` route
+
+      We specified the redirect Uri as `http://localhost:5000/oauth2callback` in our app and we passed the
+      `redirect_uri` in the authentication query. If the redirect Uris match, RingCentral will send a request
+      with the code to this route.
+
+      We get the `req.query.code` and use the `platform.login()` function to login as shown on the codes beside.
+
+      If we login successfully, we will save the token info from `token.json()` to a session and send a "login success" message to the caller.
+
+  .step(data-title='Implement the test page', data-file='../views/test.ejs' data-highlight='1-16')
+    :markdown
+      ### Implement the test page
+
+      We add a few test cases and the logout option to the test page.
+
+  .step(data-title='Implement the test route', data-file='../index.js' data-highlight='81-112')
+    :markdown
+      ### Implement the `test` route
+
+      We check the existence of the `session.tokens`. If the `session.tokens` exists, we read the tokens from the session and use the `platform` to check if we are still logged in or not.
+
+      * If the `session.tokens` does not exist or if we are no longer logged in (access token and refresh token expired), we will redirect to the main page to force the user login again.
+
+      * If we are still logged in, we detect the api value and call a RingCentral platform API accordingly.
+
+  .step(data-title='Implement the logout route', data-file='../index.js' data-highlight='62-79')
+    :markdown
+      ### Implement the `logout` route
+
+      First, we check the existence of the `session.tokens`. If the `session.tokens` exists, we read the tokens from the session and use the `platform` to check if we are still logged in or not.
+
+      If we are still logged in, we call the `platform.logout()` function to logout and reset the `session.tokens`.
+
+      Finally, we redirect to the main page to allow the user login again.
+
+  .step(data-title='Run the demo app', data-file='../README.md' data-highlight='49-53')
+    :markdown
+      ### Run the demo app
+
+      ```
+      $ node index.js
+      ```
+      On a Web browser, enter `localhost:5000` then choose to login your production or sandbox account.

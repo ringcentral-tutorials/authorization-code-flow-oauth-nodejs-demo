@@ -1,0 +1,20 @@
+{
+  "name": "authorization-code-flow-oauth-nodejs-demo",
+  "version": "1.0.0",
+  "description": "RingCentral Authorization Code Flow OAuth in Node.js demo",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ringcentral"
+  ],
+  "author": "phong.vu@ringcentral.com",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "latest",
+    "ejs": "^2.6.1",
+    "express": "^4.13.4",
+    "express-session": "^1.15.6",
+    "ringcentral": "^2.0.4"
+  }
+}
